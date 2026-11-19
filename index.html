@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="10 интерактивных демонстраций автоматизации отчётности, работы с ИИ, QA и видео на вымышленных данных.">
+  <meta name="theme-color" content="#111629">
+  <title>Автоматизация · портфолио Максима Прудникова</title>
+  <link rel="stylesheet" href="./style.css">
+  <script type="module" src="./app.js"></script>
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="#reconciliation" aria-label="Портфолио Максима Прудникова">
+      <span class="monogram" aria-hidden="true">МП</span>
+      <span>Максим Прудников <small>AI Developer · автоматизация</small></span>
+    </a>
+    <span class="mode"><span aria-hidden="true"></span> Вымышленные данные</span>
+  </header>
+
+  <div class="layout">
+    <aside class="sidebar">
+      <h2>Проекты <span id="project-count"></span></h2>
+      <nav id="projects" aria-label="Выбор проекта"></nav>
+    </aside>
+
+    <main id="workbench" class="workspace">
+      <header class="intro">
+        <p id="demo-category" class="eyebrow"></p>
+        <h1 id="demo-title">Интерактивное портфолио</h1>
+        <p id="demo-description">Демо обработки данных, работы с LLM, тестирования и видео.</p>
+      </header>
+
+      <div class="panels">
+        <form id="demo-form" class="panel input-panel">
+          <div class="panel-header">
+            <h2>Входные данные</h2>
+            <button id="load-example" type="button" class="text-button">Восстановить пример</button>
+          </div>
+          <label id="demo-input-label" for="demo-input">Исходные данные</label>
+          <textarea id="demo-input" spellcheck="false" rows="12" required maxlength="120000" aria-describedby="demo-input-label"></textarea>
+          <div class="input-actions">
+            <button class="primary" type="submit">Запустить демо <span aria-hidden="true">↗</span></button>
+            <span>Обработка в браузере</span>
+          </div>
+        </form>
+
+        <section class="panel output-panel" aria-labelledby="output-heading">
+          <div class="panel-header">
+            <h2 id="output-heading">Результат</h2>
+            <button id="download" class="text-button" type="button" disabled>Скачать CSV</button>
+          </div>
+          <p id="result-summary" class="result-summary" role="status" aria-live="polite">Здесь появится результат обработки.</p>
+          <div class="result-scroll" id="result-scroll" tabindex="0" aria-label="Таблица результата" hidden>
+            <table><thead id="result-head"></thead><tbody id="result-body"></tbody></table>
+          </div>
+          <ul id="result-notes" class="result-notes" hidden></ul>
+        </section>
+      </div>
+
+      <noscript>Включите JavaScript, чтобы запустить демонстрации.</noscript>
+    </main>
+  </div>
+</body>
+</html>
