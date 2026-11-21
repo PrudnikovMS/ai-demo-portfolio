@@ -23,6 +23,7 @@ const get = id => document.getElementById(id);
 const field = get('demo-input');
 const output = get('result-summary');
 const download = get('download');
+const projects = get('projects');
 const drafts = new Map();
 let selected;
 let result;
@@ -47,7 +48,7 @@ function renderNavigation() {
       list.append(item);
     }
     section.append(list);
-    get('projects').append(section);
+    projects.append(section);
   }
   get('project-count').textContent = String(demos.length);
 }
@@ -55,6 +56,7 @@ function renderNavigation() {
 function displayResult() {
   const notes = get('result-notes');
   const scroller = get('result-scroll');
+  output.classList.remove('pending');
   try {
     result = selected.run(field.value);
     output.textContent = result.summary;
@@ -81,22 +83,51 @@ function displayResult() {
   }
 }
 
-function selectDemo() {
-  if (selected) drafts.set(selected.id, field.value);
-  const id = location.hash.slice(1);
-  selected = Object.hasOwn(byId, id) ? byId[id] : demos[0];
-  for (const link of get('projects').querySelectorAll('a')) {
-    if (link.hash === `#${selected.id}`) link.setAttribute('aria-current', 'page');
-    else link.removeAttribute('aria-current');
-  }
-  get('demo-category').textContent = selected.tag;
-  get('demo-title').textContent = selected.title;
-  get('demo-description').textContent = selected.description;
-  get('demo-input-label').textContent = selected.inputLabel;
-  field.value = drafts.get(selected.id) ?? selected.example;
-  displayResult();
+function revealDemo() {
+  get('demo-title').focus({preventScroll: true});
+  get('workbench').scrollIntoView({block: 'start'});
 }
 
+function selectDemo() {
+  const id = location.hash.slice(1);
+  const hasDemoHash = Object.hasOwn(byId, id);
+  const next = hasDemoHash ? byId[id] : selected ?? demos[0];
+
+  if (next !== selected) {
+    if (selected) drafts.set(selected.id, field.value);
+    selected = next;
+    for (const link of projects.querySelectorAll('a')) {
+      if (link.hash === `#${selected.id}`) link.setAttribute('aria-current', 'true');
+      else link.removeAttribute('aria-current');
+    }
+    get('demo-category').textContent = selected.tag;
+    get('demo-title').textContent = selected.title;
+    get('demo-description').textContent = selected.description;
+    get('demo-input-label').textContent = selected.inputLabel;
+    field.value = drafts.get(selected.id) ?? selected.example;
+    displayResult();
+  }
+
+  if (hasDemoHash) revealDemo();
+}
+
+projects.addEventListener('click', event => {
+  const link = event.target.closest('a');
+  if (!link || link.hash !== location.hash ||
+      event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+  event.preventDefault();
+  revealDemo();
+});
+field.addEventListener('input', () => {
+  if (output.classList.contains('pending')) return;
+  result = undefined;
+  get('result-scroll').hidden = true;
+  get('result-notes').hidden = true;
+  download.disabled = true;
+  output.classList.remove('error');
+  output.classList.add('pending');
+  output.textContent = 'Данные изменились. Запустите демо, чтобы обновить результат.';
+});
 get('demo-form').addEventListener('submit', event => {
   event.preventDefault();
   displayResult();
@@ -117,4 +148,5 @@ download.addEventListener('click', () => {
 });
 window.addEventListener('hashchange', selectDemo);
 renderNavigation();
+get('demo-layout').hidden = false;
 selectDemo();
