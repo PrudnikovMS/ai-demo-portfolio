@@ -34,6 +34,60 @@ function node(tag, content) {
   return element;
 }
 
+function renderSampleTrace() {
+  const sku = document.querySelector('.sample-sku').textContent.trim();
+  const row = reconciliation.run(reconciliation.example).rows.find(item => item[0] === sku);
+  const sourceLines = reconciliation.example.split(/\r?\n---\r?\n/)
+    .map(table => table.split(/\r?\n/).find(line => line.startsWith(sku + ';')));
+  if (!row || sourceLines.length !== 2 || sourceLines.some(line => !line)) return;
+
+  const stage = get('sample-stage');
+  const controls = get('sample-tabs');
+  const buttons = [...controls.querySelectorAll('button')];
+  const values = [
+    ['В учёте', row[1]],
+    ['На площадке', row[2]],
+    ['Расхождение', row[3]],
+  ];
+  const makePair = ([label, value]) => {
+    const pair = node('div');
+    const term = node('dt', label);
+    const detail = node('dd');
+    detail.append(value);
+    pair.append(term, detail);
+    return pair;
+  };
+
+  controls.addEventListener('click', event => {
+    const button = event.target.closest('button[data-stage]');
+    if (!button || button.getAttribute('aria-pressed') === 'true') return;
+
+    const phase = button.dataset.stage;
+    for (const choice of buttons) choice.setAttribute('aria-pressed', String(choice === button));
+    stage.dataset.phase = phase;
+
+    if (phase === 'match') {
+      const details = node('p');
+      details.className = 'trace-match';
+      const connection = node('span');
+      connection.className = 'trace-connection';
+      connection.append(node('span', 'Учёт'), node('strong', sku), node('span', 'Площадка'));
+      details.append(connection, node('span', 'Найден в обеих выгрузках. Суммы сравниваются по артикулу.'));
+      stage.replaceChildren(details);
+      return;
+    }
+    const list = node('dl');
+    list.className = 'sample-lines';
+    const pairs = phase === 'input'
+      ? values.slice(0, 2).map(([label], index) => [label, node('code', sourceLines[index])])
+      : values;
+    list.append(...pairs.map(makePair));
+    stage.replaceChildren(list);
+  });
+  stage.dataset.phase = 'result';
+  controls.hidden = false;
+}
+
 function renderNavigation() {
   for (const [title, items] of groups) {
     const section = node('section');
@@ -147,6 +201,7 @@ download.addEventListener('click', () => {
   window.setTimeout(() => URL.revokeObjectURL(url), 1000);
 });
 window.addEventListener('hashchange', selectDemo);
+renderSampleTrace();
 renderNavigation();
 get('demo-layout').hidden = false;
 selectDemo();
