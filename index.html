@@ -4,9 +4,9 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="description" content="10 интерактивных демонстраций автоматизации отчётности, работы с ИИ, QA и видео на вымышленных данных.">
-  <meta name="theme-color" content="#f4f0e2">
+  <meta name="theme-color" content="#eff1f4">
   <title>Автоматизация · портфолио Максима Прудникова</title>
-  <link rel="stylesheet" href="./style.css">
+  <link rel="stylesheet" href="./style.css?v=2">
   <script type="module" src="./app.js"></script>
 </head>
 <body>
@@ -17,25 +17,21 @@
         <span class="monogram" aria-hidden="true">МП</span>
         <span>Максим Прудников <small>AI Developer · автоматизация</small></span>
       </a>
-      <span class="mode">Примеры на вымышленных данных</span>
+      <a class="topbar-link" href="#demos">К инструментам <span aria-hidden="true">↘</span></a>
     </div>
   </header>
 
   <main class="frame">
     <section class="hero" aria-labelledby="hero-title">
       <div class="hero-copy">
-        <h1 id="hero-title">Автоматизация <em>в действии</em></h1>
-        <p>Десять интерактивных демо для торговли, работы с ИИ, тестирования и видео. Измените входные данные и получите результат прямо в браузере.</p>
-        <a class="primary hero-action" href="#demos">Выбрать демо <span aria-hidden="true">↓</span></a>
+        <h1 id="hero-title">Автоматизация <em>в действии.</em></h1>
+        <div class="hero-summary">
+          <p>Десять инструментов для торговли, ИИ, тестирования и видео. Измените входные данные и получите результат в браузере.</p>
+          <span class="mode">Вымышленные примеры</span>
+        </div>
       </div>
 
       <div class="feature">
-        <div class="hero-visual" aria-hidden="true">
-          <picture>
-            <source media="(max-width: 760px)" srcset="./paper-feed-mobile.webp">
-            <img src="./paper-feed.webp" alt="" width="1350" height="900" fetchpriority="high">
-          </picture>
-        </div>
         <section class="sample" aria-labelledby="sample-title">
           <header class="sample-header">
             <h2 id="sample-title">Сверка двух выгрузок</h2>
@@ -44,15 +40,17 @@
               <span class="trace-play-icon" aria-hidden="true"></span><span id="trace-play-label">Проиграть сверку</span>
             </button>
           </header>
-          <div class="sample-tabs" id="sample-tabs" role="group" aria-label="Этапы сверки" hidden>
-            <button type="button" data-stage="input" aria-pressed="false" aria-controls="sample-stage">Выгрузки</button>
-            <button type="button" data-stage="match" aria-pressed="false" aria-controls="sample-stage">Сверка</button>
-            <button type="button" data-stage="result" aria-pressed="true" aria-controls="sample-stage">Результат</button>
-          </div>
           <div class="trace-track" id="trace-track" aria-hidden="true" hidden>
+            <span class="trace-port trace-port-left">учёт.csv</span><span class="trace-port trace-port-right">площадка.csv</span>
             <span class="trace-lane trace-lane-left"></span><span class="trace-lane trace-lane-right"></span>
+            <span class="trace-processor">CUP-204</span>
             <span class="trace-slip trace-slip-left"></span><span class="trace-slip trace-slip-right"></span>
-            <span class="trace-receipt"></span>
+            <span class="trace-receipt">Δ</span>
+          </div>
+          <div class="sample-tabs" id="sample-tabs" role="group" aria-label="Этапы сверки" hidden>
+            <button type="button" data-stage="input" aria-pressed="false" aria-controls="sample-stage"><span aria-hidden="true">01</span> Выгрузки</button>
+            <button type="button" data-stage="match" aria-pressed="false" aria-controls="sample-stage"><span aria-hidden="true">02</span> Сверка</button>
+            <button type="button" data-stage="result" aria-pressed="true" aria-controls="sample-stage"><span aria-hidden="true">03</span> Результат</button>
           </div>
           <div class="sample-stage" id="sample-stage" aria-live="polite">
             <dl class="sample-lines">
@@ -68,8 +66,8 @@
 
     <section id="demos" class="library" tabindex="-1" aria-labelledby="library-title">
       <header class="library-header">
-        <h2 id="library-title">Демонстрации <span id="project-count"></span></h2>
-        <p>Выберите задачу и проверьте свой пример прямо в браузере.</p>
+        <h2 id="library-title">Инструменты <span id="project-count"></span></h2>
+        <p>Выберите задачу и проверьте свой пример.</p>
       </header>
 
       <noscript>Включите JavaScript, чтобы запустить демонстрации.</noscript>
