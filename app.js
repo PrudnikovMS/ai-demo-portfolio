@@ -44,6 +44,13 @@ function renderSampleTrace() {
   const stage = get('sample-stage');
   const controls = get('sample-tabs');
   const buttons = [...controls.querySelectorAll('button')];
+  const playButton = get('trace-play');
+  const playLabel = get('trace-play-label');
+  const track = get('trace-track');
+  const reduced = window.matchMedia('(prefers-reduced-motion: reduce)');
+  const steps = ['input', 'match', 'result'];
+  let playback;
+  let intro;
   const values = [
     ['В учёте', row[1]],
     ['На площадке', row[2]],
@@ -58,13 +65,10 @@ function renderSampleTrace() {
     return pair;
   };
 
-  controls.addEventListener('click', event => {
-    const button = event.target.closest('button[data-stage]');
-    if (!button || button.getAttribute('aria-pressed') === 'true') return;
-
-    const phase = button.dataset.stage;
-    for (const choice of buttons) choice.setAttribute('aria-pressed', String(choice === button));
+  function showStep(phase) {
+    for (const choice of buttons) choice.setAttribute('aria-pressed', String(choice.dataset.stage === phase));
     stage.dataset.phase = phase;
+    track.dataset.phase = phase;
 
     if (phase === 'match') {
       const details = node('p');
@@ -83,9 +87,59 @@ function renderSampleTrace() {
       : values;
     list.append(...pairs.map(makePair));
     stage.replaceChildren(list);
+  }
+
+  function stopPlayback() {
+    clearTimeout(playback);
+    playback = undefined;
+    playButton.classList.remove('playing');
+    playLabel.textContent = 'Проиграть сверку';
+    stage.setAttribute('aria-live', 'polite');
+  }
+
+  function playSteps(announce) {
+    intro?.disconnect();
+    stopPlayback();
+    if (!announce) stage.setAttribute('aria-live', 'off');
+    playButton.classList.add('playing');
+    playLabel.textContent = 'Остановить сверку';
+
+    function advance(index) {
+      showStep(steps[index]);
+      playback = setTimeout(
+        () => (index + 1 < steps.length ? advance(index + 1) : stopPlayback()),
+        1250,
+      );
+    }
+    advance(0);
+  }
+
+  controls.addEventListener('click', event => {
+    const button = event.target.closest('button[data-stage]');
+    if (!button) return;
+    intro?.disconnect();
+    stopPlayback();
+    if (stage.dataset.phase !== button.dataset.stage) showStep(button.dataset.stage);
+  });
+  playButton.addEventListener('click', () => playback ? stopPlayback() : playSteps(true));
+  reduced.addEventListener?.('change', event => {
+    if (event.matches) {
+      intro?.disconnect();
+      stopPlayback();
+    }
   });
   stage.dataset.phase = 'result';
+  track.dataset.phase = 'result';
   controls.hidden = false;
+  track.hidden = false;
+  playButton.hidden = false;
+
+  if (!reduced.matches && !location.hash && 'IntersectionObserver' in window) {
+    intro = new IntersectionObserver(entries => {
+      if (entries.some(entry => entry.intersectionRatio >= 0.62) && !reduced.matches && !document.hidden) playSteps(false);
+    }, { threshold: 0.62 });
+    intro.observe(track.closest('.sample'));
+  }
 }
 
 function renderNavigation() {

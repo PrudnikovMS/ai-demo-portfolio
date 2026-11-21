@@ -40,11 +40,19 @@
           <header class="sample-header">
             <h2 id="sample-title">Сверка двух выгрузок</h2>
             <span class="sample-sku">CUP-204</span>
+            <button class="trace-play" id="trace-play" type="button" hidden>
+              <span class="trace-play-icon" aria-hidden="true"></span><span id="trace-play-label">Проиграть сверку</span>
+            </button>
           </header>
           <div class="sample-tabs" id="sample-tabs" role="group" aria-label="Этапы сверки" hidden>
             <button type="button" data-stage="input" aria-pressed="false" aria-controls="sample-stage">Выгрузки</button>
             <button type="button" data-stage="match" aria-pressed="false" aria-controls="sample-stage">Сверка</button>
             <button type="button" data-stage="result" aria-pressed="true" aria-controls="sample-stage">Результат</button>
+          </div>
+          <div class="trace-track" id="trace-track" aria-hidden="true" hidden>
+            <span class="trace-lane trace-lane-left"></span><span class="trace-lane trace-lane-right"></span>
+            <span class="trace-slip trace-slip-left"></span><span class="trace-slip trace-slip-right"></span>
+            <span class="trace-receipt"></span>
           </div>
           <div class="sample-stage" id="sample-stage" aria-live="polite">
             <dl class="sample-lines">
