@@ -6,8 +6,8 @@
   <meta name="description" content="10 интерактивных демонстраций автоматизации отчётности, работы с ИИ, QA и видео на вымышленных данных.">
   <meta name="theme-color" content="#eff1f4">
   <title>Автоматизация · портфолио Максима Прудникова</title>
-  <link rel="stylesheet" href="./style.css?v=2">
-  <script type="module" src="./app.js"></script>
+  <link rel="stylesheet" href="./style.css?v=3">
+  <script type="module" src="./app.js?v=3"></script>
 </head>
 <body>
   <a class="skip-link" href="#demos">Перейти к демонстрациям</a>
@@ -17,7 +17,10 @@
         <span class="monogram" aria-hidden="true">МП</span>
         <span>Максим Прудников <small>AI Developer · автоматизация</small></span>
       </a>
-      <a class="topbar-link" href="#demos">К инструментам <span aria-hidden="true">↘</span></a>
+      <nav class="topbar-nav" aria-label="Главное меню">
+        <a class="topbar-link" href="#demos">К инструментам <span aria-hidden="true">↘</span></a>
+        <a class="topbar-link" href="#project-work">Работы</a>
+      </nav>
     </div>
   </header>
 
@@ -26,8 +29,8 @@
       <div class="hero-copy">
         <h1 id="hero-title">Автоматизация <em>в действии.</em></h1>
         <div class="hero-summary">
-          <p>Десять инструментов для торговли, ИИ, тестирования и видео. Измените входные данные и получите результат в браузере.</p>
-          <span class="mode">Вымышленные примеры</span>
+          <p>Сверьте выгрузки, проверьте CSV перед импортом или найдите перекрытия в субтитрах. Измените входные данные и скачайте результат.</p>
+          <span class="mode">10 демо с вымышленными примерами</span>
         </div>
       </div>
 
@@ -59,9 +62,21 @@
               <div><dt>Расхождение</dt><dd>−60 ₽</dd></div>
             </dl>
           </div>
-          <a id="sample-demo" href="#reconciliation">Открыть сверку <span aria-hidden="true">↗</span></a>
+          <a id="sample-demo" href="#demos" data-demo-target="reconciliation">Проверить свою выгрузку <span aria-hidden="true">↗</span></a>
         </section>
       </div>
+    </section>
+
+    <section class="task-paths" aria-label="Выбрать задачу">
+      <a href="#demos" data-demo-target="reconciliation">
+        <span>Торговля</span><strong>Найти расхождения в отчётах</strong><span>Две выгрузки → разница по артикулам <b aria-hidden="true">↗</b></span>
+      </a>
+      <a href="#demos" data-demo-target="import-qa">
+        <span>Контроль качества</span><strong>Проверить таблицу перед импортом</strong><span>CSV → строки, которые нужно исправить <b aria-hidden="true">↗</b></span>
+      </a>
+      <a href="#demos" data-demo-target="subtitles">
+        <span>Видео</span><strong>Проверить готовые субтитры</strong><span>SRT → проблемные интервалы <b aria-hidden="true">↗</b></span>
+      </a>
     </section>
 
     <section id="demos" class="library" tabindex="-1" aria-labelledby="library-title">
@@ -108,6 +123,19 @@
           </div>
         </section>
       </div>
+    </section>
+    <section id="project-work" class="project-work" aria-labelledby="project-work-title">
+      <div>
+        <p class="work-type">Публичный проект</p>
+        <h2 id="project-work-title">PRUD dobro</h2>
+        <p>Каталог помощи приютам и лесным проектам. Поиск по организации и региону ведёт к контактам и страницам помощи. Избранное можно сохранить в браузере.</p>
+        <a class="primary" href="https://dobro-ryadom-prudnikov.maksim-kcl.chatgpt.site/">Открыть проект <span aria-hidden="true">↗</span></a>
+      </div>
+      <aside>
+        <h3>Есть вопрос по демо?</h3>
+        <p>Оставьте вопрос или предложите улучшение в публичных GitHub Issues.</p>
+        <a href="https://github.com/PrudnikovMS/ai-demo-portfolio/issues">Открыть GitHub Issues <span aria-hidden="true">↗</span></a>
+      </aside>
     </section>
   </main>
 </body>

@@ -47,10 +47,11 @@ function renderSampleTrace() {
   const playButton = get('trace-play');
   const playLabel = get('trace-play-label');
   const track = get('trace-track');
+  const feature = track.closest('.feature');
   const reduced = window.matchMedia('(prefers-reduced-motion: reduce)');
   const steps = ['input', 'match', 'result'];
   let playback;
-  let intro;
+  let frame = 0;
   const values = [
     ['В учёте', row[1]],
     ['На площадке', row[2]],
@@ -98,7 +99,6 @@ function renderSampleTrace() {
   }
 
   function playSteps(announce) {
-    intro?.disconnect();
     stopPlayback();
     if (!announce) stage.setAttribute('aria-live', 'off');
     playButton.classList.add('playing');
@@ -117,29 +117,48 @@ function renderSampleTrace() {
   controls.addEventListener('click', event => {
     const button = event.target.closest('button[data-stage]');
     if (!button) return;
-    intro?.disconnect();
     stopPlayback();
     if (stage.dataset.phase !== button.dataset.stage) showStep(button.dataset.stage);
   });
   playButton.addEventListener('click', () => playback ? stopPlayback() : playSteps(true));
-  reduced.addEventListener?.('change', event => {
-    if (event.matches) {
-      intro?.disconnect();
-      stopPlayback();
+  function updateFromScroll() {
+    frame = 0;
+    if (playback || feature.contains(document.activeElement)) return;
+    const box = feature.getBoundingClientRect();
+    if (box.bottom < innerHeight * .12) return;
+    const travelled = innerHeight * .44 - box.top;
+    const distance = Math.min(360, innerHeight * .42);
+    const progress = Math.max(0, Math.min(1, travelled / distance));
+    const step = steps[Math.min(steps.length - 1, Math.floor(progress * steps.length))];
+    track.style.setProperty('--trace-progress', progress.toFixed(3));
+    if (stage.dataset.phase !== step) {
+      stage.setAttribute('aria-live', 'off');
+      showStep(step);
     }
-  });
-  stage.dataset.phase = 'result';
-  track.dataset.phase = 'result';
+  }
+
+  function onScroll() {
+    if (!frame) frame = requestAnimationFrame(updateFromScroll);
+  }
+
+  function syncMotionPreference() {
+    if (reduced.matches) {
+      window.removeEventListener('scroll', onScroll);
+      if (frame) cancelAnimationFrame(frame);
+      frame = 0;
+      track.style.removeProperty('--trace-progress');
+      stopPlayback();
+    } else {
+      window.addEventListener('scroll', onScroll, { passive: true });
+    }
+  }
+
   controls.hidden = false;
   track.hidden = false;
   playButton.hidden = false;
-
-  if (!reduced.matches && !location.hash && 'IntersectionObserver' in window) {
-    intro = new IntersectionObserver(entries => {
-      if (entries.some(entry => entry.intersectionRatio >= 0.62) && !reduced.matches && !document.hidden) playSteps(false);
-    }, { threshold: 0.62 });
-    intro.observe(track.closest('.sample'));
-  }
+  showStep(reduced.matches || location.hash ? 'result' : 'input');
+  reduced.addEventListener?.('change', syncMotionPreference);
+  syncMotionPreference();
 }
 
 function renderNavigation() {
@@ -219,8 +238,12 @@ function selectDemo() {
   if (hasDemoHash) revealDemo();
 }
 
+for (const link of document.querySelectorAll('[data-demo-target]')) {
+  link.hash = link.dataset.demoTarget;
+}
+
 document.addEventListener('click', event => {
-  const link = event.target.closest('#projects a, #sample-demo');
+  const link = event.target.closest('#projects a, [data-demo-target]');
   if (!link || link.hash !== location.hash ||
       event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
   event.preventDefault();
