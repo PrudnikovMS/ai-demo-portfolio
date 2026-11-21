@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="description" content="10 интерактивных демонстраций автоматизации отчётности, работы с ИИ, QA и видео на вымышленных данных.">
-  <meta name="theme-color" content="#101719">
+  <meta name="theme-color" content="#f4f0e2">
   <title>Автоматизация · портфолио Максима Прудникова</title>
   <link rel="stylesheet" href="./style.css">
   <script type="module" src="./app.js"></script>
@@ -17,7 +17,7 @@
         <span class="monogram" aria-hidden="true">МП</span>
         <span>Максим Прудников <small>AI Developer · автоматизация</small></span>
       </a>
-      <span class="mode"><span aria-hidden="true"></span> Вымышленные данные</span>
+      <span class="mode">Примеры на вымышленных данных</span>
     </div>
   </header>
 
@@ -25,26 +25,30 @@
     <section class="hero" aria-labelledby="hero-title">
       <div class="hero-copy">
         <h1 id="hero-title">Автоматизация <em>в действии</em></h1>
-        <p>Десять интерактивных демо для отчётности, ИИ, контроля качества и видео. Измените пример, запустите проверку и посмотрите, что получилось.</p>
+        <p>Десять интерактивных демо для торговли, работы с ИИ, тестирования и видео. Измените входные данные и получите результат прямо в браузере.</p>
         <a class="primary hero-action" href="#demos">Выбрать демо <span aria-hidden="true">↓</span></a>
       </div>
 
-      <section class="sample" aria-labelledby="sample-title">
-        <header class="sample-header">
-          <span class="sample-label">Пример результата</span>
-          <h2 id="sample-title">Сверка двух выгрузок</h2>
-        </header>
-        <div class="sample-record">
-          <span>Артикул</span>
-          <strong>CUP-204</strong>
+      <div class="feature">
+        <div class="hero-visual" aria-hidden="true">
+          <picture>
+            <source media="(max-width: 760px)" srcset="./paper-feed-mobile.webp">
+            <img src="./paper-feed.webp" alt="" width="1350" height="900" fetchpriority="high">
+          </picture>
         </div>
-        <dl class="sample-lines">
-          <div><dt>В учёте</dt><dd>980,50 ₽</dd></div>
-          <div><dt>На площадке</dt><dd>920,50 ₽</dd></div>
-          <div><dt>Расхождение</dt><dd>−60,00 ₽</dd></div>
-        </dl>
-        <p class="sample-note">Проверено 5 артикулов. 4 требуют внимания.</p>
-      </section>
+        <section class="sample" aria-labelledby="sample-title">
+          <header class="sample-header">
+            <h2 id="sample-title">Сверка двух выгрузок</h2>
+            <span class="sample-sku">CUP-204</span>
+          </header>
+          <dl class="sample-lines">
+            <div><dt>В учёте</dt><dd>980,50 ₽</dd></div>
+            <div><dt>На площадке</dt><dd>920,50 ₽</dd></div>
+            <div><dt>Расхождение</dt><dd>−60 ₽</dd></div>
+          </dl>
+          <a id="sample-demo" href="#reconciliation">Открыть сверку <span aria-hidden="true">↗</span></a>
+        </section>
+      </div>
     </section>
 
     <section id="demos" class="library" tabindex="-1" aria-labelledby="library-title">

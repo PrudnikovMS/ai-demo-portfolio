@@ -111,8 +111,8 @@ function selectDemo() {
   if (hasDemoHash) revealDemo();
 }
 
-projects.addEventListener('click', event => {
-  const link = event.target.closest('a');
+document.addEventListener('click', event => {
+  const link = event.target.closest('#projects a, #sample-demo');
   if (!link || link.hash !== location.hash ||
       event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
   event.preventDefault();
