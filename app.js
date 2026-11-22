@@ -126,7 +126,8 @@ function renderSampleTrace() {
     if (playback || feature.contains(document.activeElement)) return;
     const box = feature.getBoundingClientRect();
     if (box.bottom < innerHeight * .12) return;
-    const travelled = innerHeight * .44 - box.top;
+    const start = Math.max(0, window.scrollY + box.top - innerHeight * .44);
+    const travelled = window.scrollY - start;
     const distance = Math.min(360, innerHeight * .42);
     const progress = Math.max(0, Math.min(1, travelled / distance));
     const step = steps[Math.min(steps.length - 1, Math.floor(progress * steps.length))];
